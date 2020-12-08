@@ -6,6 +6,8 @@ const port = 3002;
 const app = express();
 const bodyParser = require('body-parser')
 app.use(bodyParser())
+app.use(cors())
+
 
 connection.connect(function(err) {
   if (err) {
