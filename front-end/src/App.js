@@ -16,21 +16,20 @@ const [prod, setProd] = useState({
   category: "",
   price: "",
 });
-console.log(search)
 
   useEffect(() => {
     fetchData();
-  }, [deleteData]);
+  }, [search, deleteData]);
 
   const fetchData = () => {
     axios
       .get(`http://localhost:3002/product/${search}`)
       .then((res) => setData(res.data));
   };
-const searchF = (elm, value) => {
-  console.log(typeof(value))
-  setSearch(`find/${value}`)
-}
+const searchF = (elm, bValue) => {
+  console.log(bValue) 
+  setSearch(`find/${bValue}`)
+  }
 
   function deleteData(s, idproduct) {
     console.log(idproduct)
@@ -50,6 +49,9 @@ const searchF = (elm, value) => {
       .then(setUpdate(prod.name, prod.category, prod.price));
   };
 
+  function refreshPage(){ 
+    window.location.reload(); 
+}
 
 
 return (
@@ -77,8 +79,10 @@ return (
   return (
 <option  onClick={(element) => {searchF(element, el.category)} } value={`${el.category}`}>{el.category}</option>
   )})}
+ 
   
 </select>
+<button type="button" onClick={ refreshPage }> <span>Reload</span> </button> 
         </div>
     <div>
     {data.map((ele) => {
