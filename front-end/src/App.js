@@ -9,22 +9,28 @@ const App = () => {
 
 const [data, setData] = useState([])
 const [update, setUpdate] = useState("")
+const [cat, setCat] = useState("")
+const [search, setSearch]=useState("")
 const [prod, setProd] = useState({
   name: "",
   category: "",
   price: "",
 });
+console.log(search)
 
   useEffect(() => {
     fetchData();
-  }, [uodate, deleteData]);
+  }, [deleteData]);
 
   const fetchData = () => {
     axios
-      .get(`http://localhost:3002/product/`)
+      .get(`http://localhost:3002/product/${search}`)
       .then((res) => setData(res.data));
   };
-  console.log(data);
+const searchF = (elm, value) => {
+  console.log(typeof(value))
+  setSearch(`find/${value}`)
+}
 
   function deleteData(s, idproduct) {
     console.log(idproduct)
@@ -38,10 +44,10 @@ const [prod, setProd] = useState({
   const postData = (e) => {
     e.preventDefault();
     axios
-      .post(`http://localhost:3002/product/add`, pop)
+      .post(`http://localhost:3002/product/add`,prod)
       .catch((err) => console.log(err))
 
-      .then(setUpdate(prod.name));
+      .then(setUpdate(prod.name, prod.category, prod.price));
   };
 
 
@@ -50,7 +56,7 @@ return (
   <div>
     <Header />
     <div style={{width : '230px', height : '250px'}}>
-        <form>
+        <form onSubmit={postData}>
             <label for="name">Product name</label>
             <input type="text" id="name" value={prod.name}
           onChange={(e) => setProd({ ...prod, name: e.target.value })}></input>
@@ -60,8 +66,19 @@ return (
             <label for="Price">Product price</label>
             <input type="number" id="price" value={prod.price}
           onChange={(e) => setProd({ ...prod, price: e.target.value })}></input>
-            <button>add product</button>
+            <button type="submit">add product</button>
         </form>
+        </div>
+        <div>
+        <label for="category">Choose category</label>
+
+<select name="category" id="category" multiple>
+  {data.map((el)=> {
+  return (
+<option  onClick={(element) => {searchF(element, el.category)} } value={`${el.category}`}>{el.category}</option>
+  )})}
+  
+</select>
         </div>
     <div>
     {data.map((ele) => {

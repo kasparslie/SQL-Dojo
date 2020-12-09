@@ -47,12 +47,42 @@ app.get("/product", (req, res) => {
     }
   );
 });
+app.get("/category", (req, res) => {
+  connection.query(
+    "SELECT category from product", 
+    (err, results) => {
+      if (err) {  
+        console.log(err);
+        res.status(500).send("Error retrieving data");
+      } else {
+        res.status(200).json(results);
+      }
+    }
+  );
+});
+
+app.get("/product/find/:category", (req, res) => {
+  const myCat= req.params.category
+  console.log(req.params.category)
+  connection.query(
+    "SELECT * from product where category=?", [myCat], 
+    (err, results) => {
+      if (err) {  
+        console.log(err);
+        res.status(500).send("Error retrieving data");
+      } else {
+        res.status(200).json(results);
+      }
+    }
+  );
+});
+
 
 
 app.get("/product/:id", (req, res) => {
   const idP= req.params.id
   connection.query(
-    "SELECT * from product where id=?", [idP], 
+    "SELECT * from product where idproduct=?", [idP], 
     (err, results) => {
       if (err) {  
         console.log(err);
