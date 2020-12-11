@@ -19,7 +19,7 @@ const [prod, setProd] = useState({
 
   useEffect(() => {
     fetchData(data);
-  }, [data]);
+  }, []);
 console.log(search)
 
   const fetchData = () => {
@@ -30,7 +30,8 @@ console.log(search)
 const searchF = (bValue) => {
   console.log(bValue) 
   setSearch(`category/search?category=${bValue}`)
-  }
+  fetchData()
+  };
 
   function deleteData(s, idproduct) {
     console.log(idproduct)
