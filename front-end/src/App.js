@@ -18,24 +18,25 @@ const [prod, setProd] = useState({
 });
 
   useEffect(() => {
-    fetchData();
-  }, [search, deleteData]);
+    fetchData(data);
+  }, [data]);
+console.log(search)
 
   const fetchData = () => {
     axios
-      .get(`http://localhost:3002/product/${search}`)
+      .get(`http://localhost:3002/products/${search}`)
       .then((res) => setData(res.data));
   };
-const searchF = (elm, bValue) => {
+const searchF = (bValue) => {
   console.log(bValue) 
-  setSearch(`find/${bValue}`)
+  setSearch(`category/search?category=${bValue}`)
   }
 
   function deleteData(s, idproduct) {
     console.log(idproduct)
     s.preventDefault();
     axios
-      .delete(`http://localhost:3002/product/${idproduct}`)
+      .delete(`http://localhost:3002/products/${idproduct}`)
       .catch((err) => console.log(err))
       .then(fetchData)
   };
@@ -43,7 +44,7 @@ const searchF = (elm, bValue) => {
   const postData = (e) => {
     e.preventDefault();
     axios
-      .post(`http://localhost:3002/product/add`,prod)
+      .post(`http://localhost:3002/products/add`,prod)
       .catch((err) => console.log(err))
 
       .then(setUpdate(prod.name, prod.category, prod.price));
@@ -65,7 +66,7 @@ return (
             <label for="Category">Product category</label>
             <input type="text" id="category" value={prod.category}
           onChange={(e) => setProd({ ...prod, category: e.target.value })}></input>
-            <label for="Price">Product price</label>
+            <label for="Price">Product praice</label>
             <input type="number" id="price" value={prod.price}
           onChange={(e) => setProd({ ...prod, price: e.target.value })}></input>
             <button type="submit">add product</button>
@@ -77,7 +78,7 @@ return (
 <select name="category" id="category" multiple>
   {data.map((el)=> {
   return (
-<option  onClick={(element) => {searchF(element, el.category)} } value={`${el.category}`}>{el.category}</option>
+<option  onClick={(element) => {searchF(el.category)} } value={`${el.category}`}>{el.category}</option>
   )})}
  
   
